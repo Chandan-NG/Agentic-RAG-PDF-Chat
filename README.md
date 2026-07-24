@@ -1,6 +1,6 @@
 # Agentic RAG PDF Chat ⚡
 
-An enterprise-grade, 100% local, and private Agentic Retrieval-Augmented Generation (RAG) PDF Chat application. Built using Python, **Streamlit**, **LangGraph**, **LlamaIndex**, **ChromaDB**, **PyMuPDF**, and **Ollama** (`qwen2:7b` + `nomic-embed-text`), the user interface strictly adheres to the **Linear Design System** (`DESIGN.md`).
+A fully local and private Agentic RAG application for chatting with PDF documents completely offline. Powered by **LangGraph** for multi-agent reasoning, **LlamaIndex** and **PyMuPDF** for document processing, **ChromaDB** for vector storage, and local **Ollama** models (`qwen2:7b` + `nomic-embed-text`), built with a single-page Streamlit interface.
 
 ---
 
@@ -35,11 +35,11 @@ An enterprise-grade, 100% local, and private Agentic Retrieval-Augmented Generat
 
 ## 🏛️ Project Architecture
 
-The application adopts a clean, decoupled architecture where document ingestion and vector retrieval are handled by LlamaIndex and persistent ChromaDB storage, while runtime reasoning and multi-step evaluation are executed via an autonomous LangGraph StateGraph pipeline, all presented through a single-page Streamlit interface styled after Linear's dark marketing canvas (`#010102`).
+The application adopts a clean, decoupled architecture where document ingestion and vector retrieval are handled by LlamaIndex and persistent ChromaDB storage, while runtime reasoning and multi-step evaluation are executed via an autonomous LangGraph StateGraph pipeline, presented through a single-page Streamlit interface.
 
 ```mermaid
 flowchart TD
-    UI[Streamlit Single Page UI - Linear System] -->|Upload PDFs| PyMuPDF[PyMuPDF Page Extractor]
+    UI[Streamlit Single Page UI] -->|Upload PDFs| PyMuPDF[PyMuPDF Page Extractor]
     PyMuPDF --> Chunker[LlamaIndex SentenceSplitter]
     Chunker --> Embedder[OllamaEmbedding nomic-embed-text]
     Embedder --> VectorStore[(ChromaDB Persistent Store)]
@@ -85,11 +85,10 @@ flowchart TD
 
 | Tool / Technology | Role & Usage |
 |---|---|
-| **Streamlit** | Single-page UI framework with custom CSS matching `DESIGN.md` (Linear Design System). |
+| **Streamlit** | Single-page Python UI framework for document upload and interactive chat. |
 | **LangGraph** | Multi-agent state machine orchestrating query rewrite loops and validation logic. |
 | **LlamaIndex** | Document node parsing, semantic chunking (`SentenceSplitter`), and embedding integration. |
 | **ChromaDB** | Local persistent vector database storing chunk embeddings and rich page metadata. |
 | **PyMuPDF (`fitz`)** | Fast, high-accuracy PDF text extraction with page tracking. |
 | **Ollama** | Local model runner serving `qwen2:7b` (LLM) and `nomic-embed-text` (Embedding). |
 | **Pydantic & Python Typing** | Type safety, clean state definition, and schema validation. |
-| **Linear Design System Tokens** | Deep dark canvas (`#010102`), surface elevation ladder, `#23252a` hairline borders, and lavender `#5e6ad2` primary accents. |
