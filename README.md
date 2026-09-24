@@ -37,17 +37,7 @@ A fully local and private Agentic RAG application for chatting with PDF document
 
 The application adopts a clean, decoupled architecture where document ingestion and vector retrieval are handled by LlamaIndex and persistent ChromaDB storage, while runtime reasoning and multi-step evaluation are executed via an autonomous LangGraph StateGraph pipeline, presented through a single-page Streamlit interface.
 
-```mermaid
-flowchart TD
-    UI[Streamlit Single Page UI] -->|Upload PDFs| PyMuPDF[PyMuPDF Page Extractor]
-    PyMuPDF --> Chunker[LlamaIndex SentenceSplitter]
-    Chunker --> Embedder[OllamaEmbedding nomic-embed-text]
-    Embedder --> VectorStore[(ChromaDB Persistent Store)]
-    
-    UI -->|User Question| Graph[LangGraph Agent Workflow]
-    VectorStore -.->|Top-K Context Chunks| Graph
-    Graph -->|Stream Response + Confidence + Sources| UI
-```
+![Project Architecture](images/architecture.png)
 
 ---
 
@@ -55,20 +45,7 @@ flowchart TD
 
 The application runs a real LangGraph `StateGraph` workflow featuring autonomous query expansion, semantic context grading, conditional retry loops, response synthesis, and answer validation.
 
-```mermaid
-flowchart TD
-    START((START)) --> QueryRewriter[1. Query Rewriter Agent]
-    QueryRewriter --> Retriever[2. Vector Retriever Agent]
-    Retriever --> RelevanceGrader[3. Chunk Relevance Grader]
-    RelevanceGrader --> DecisionNode{4. Quality Check?}
-    
-    DecisionNode -->|Poor & Retry < Max| QueryRewriter
-    DecisionNode -->|Pass OR Max Retries| AnswerGenerator[5. Answer Generator Agent]
-    
-    AnswerGenerator --> ResponseValidator[6. Response Validator Agent]
-    ResponseValidator --> CitationFormatter[7. Citation Formatter Agent]
-    CitationFormatter --> END((END))
-```
+![Project Workflow](images/workflow.png)
 
 ### Workflow Nodes Breakdown:
 1. **Query Rewriter Agent**: Reformulates conversational user queries into keyword-dense, domain-specific search vectors.
